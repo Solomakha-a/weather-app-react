@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 export default function Weather() {
+  const [ready, setReady] = useState(false);
+  const [tempreture, setTempreture] = useState(null);
+  function handleResponse(response) {
+    setTempreture(response.data.tempreture);
+    
+    setReady(true);
+}
+
+if (ready) {
     return <div className="Weather">  
     <div className="wrapper">    
         <form>
@@ -13,7 +23,7 @@ export default function Weather() {
                 <input type="submit" value="Search" className="btn btn-primary w-100"/>
                 </div>
                 <div className="col-3">
-                <input type="submit" value="Location" className="btn btn-primary w-100"/>
+                <input type="submit" value="Your location" className="btn btn-primary w-100"/>
                 </div>
                 </div>
         </form>
@@ -48,4 +58,13 @@ export default function Weather() {
     </footer>
     </div>
 
+} else {
+    const apiKey = "4o2b1et2ad8780b3de6b1ffa54355c3a";
+    let city = "Moscow";
+    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+
+    return "Loading..."
 }
+    }
+    
